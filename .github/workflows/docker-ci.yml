@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Login to Docker Hub
@@ -19,12 +19,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and Push Backend
-        run: |
-          docker build ./backend -t ${{ secrets.DOCKERHUB_USERNAME }}/mean-backend:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mean-backend:latest
+      - name: Build Backend Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mean-backend:latest ./backend
 
-      - name: Build and Push Frontend
-        run: |
-          docker build ./frontend -t ${{ secrets.DOCKERHUB_USERNAME }}/mean-frontend:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/mean-frontend:latest
+      - name: Push Backend Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/mean-backend:latest
+
+      - name: Build Frontend Image
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/mean-frontend:latest ./frontend
+
+      - name: Push Frontend Image
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/mean-frontend:latest
