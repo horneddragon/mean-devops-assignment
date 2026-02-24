@@ -122,13 +122,15 @@ The VM can be stopped and restarted.
 External IP is ephemeral and may change after restart.
 
 
-SCREENSHOTS (to be added in repo)
+SCREENSHOTS 
 --------------------------------
-screenshots/ci.png        -> GitHub Actions successful pipeline
-screenshots/dockerhub.png -> Docker Hub images (backend + frontend)
-screenshots/ui.png        -> Application running in browser
-screenshots/vm.png        -> GCP VM instance
-screenshots/dockerps.png -> docker ps output
+screenshots/ci.png        -> <img width="1707" height="824" alt="image" src="https://github.com/user-attachments/assets/6d729163-e6cf-4ac6-8286-5090e7d130d7" />
+screenshots/dockerhub.png -> <img width="1697" height="843" alt="image" src="https://github.com/user-attachments/assets/ce883435-0237-4d9c-b29c-0c4063a20128" />
+screenshots/ui.png        -> <img width="1709" height="919" alt="image" src="https://github.com/user-attachments/assets/c51024c0-2e36-450e-9f59-c3c2cd5f078d" />
+                             <img width="1706" height="825" alt="image" src="https://github.com/user-attachments/assets/443aa4d6-4236-45b2-a012-c4338cecff56" />
+screenshots/vm.png        -> <img width="1363" height="826" alt="image" src="https://github.com/user-attachments/assets/c4d2d0b1-b2b6-4fc1-b226-ebf021dc313b" />
+screenshots/dockerps.png -> <img width="1363" height="831" alt="image" src="https://github.com/user-attachments/assets/7091356b-5589-4eac-8be7-3733c62b0205" />
+
 
 
 NOTES
