@@ -1,221 +1,143 @@
-# MEAN DevOps Assignment – Full Stack Deployment
+MEAN DEVOPS ASSIGNMENT
 
-## 📌 Overview
 
-This project demonstrates end-to-end DevOps implementation for a full-stack MEAN CRUD application using:
+PROJECT OVERVIEW
+----------------
+This project is a full-stack MEAN CRUD application deployed using Docker, Docker Compose, Nginx, GitHub Actions CI/CD, and Google Cloud VM.
 
-- MongoDB – Database  
-- Express + Node.js – Backend REST API  
-- Angular 15 – Frontend UI  
-- Docker & Docker Compose – Containerization  
-- Nginx – Reverse Proxy  
-- GitHub + Docker Hub – Source & Image Registry  
-- Google Cloud Platform (GCP) – Cloud Deployment  
+Frontend: Angular 15
+Backend: Node.js + Express
+Database: MongoDB
+Reverse Proxy: Nginx
+CI/CD: GitHub Actions
+Cloud: Google Cloud Compute Engine
+Containers: Docker + Docker Compose
 
-The application manages Tutorials with full CRUD operations:
-Create, Read, Update, Delete + Search by title.
+The application allows users to:
+- Create tutorials
+- View tutorials
+- Update tutorials
+- Delete tutorials
+- Search tutorials by title
 
-Live deployment is hosted on a GCP VM.
 
----
+ARCHITECTURE
+------------
+Browser -> Nginx (Port 80)
+Nginx -> Angular Frontend
+Nginx /api -> Node Backend -> MongoDB
 
-## 🏗 Architecture
+All services run as Docker containers using docker-compose.
 
-Browser  
-↓  
-Nginx (Port 80)  
-↓  
-Angular Frontend Container  
-↓  
-Node / Express Backend Container  
-↓  
-MongoDB Container  
 
-All services run via Docker Compose on a GCP VM.
+REPOSITORY STRUCTURE
+--------------------
+backend/
+frontend/
+nginx/
+docker-compose.yml
+.github/workflows/docker-ci.yml
 
----
 
-## ⚙️ Tech Stack
+LOCAL SETUP
+-----------
+Backend:
+cd backend
+npm install
+node server.js
+Runs on port 8080
 
-- Angular 15  
-- Node.js + Express  
-- MongoDB 6  
-- Docker  
-- Docker Compose  
-- Nginx  
-- GitHub  
-- Docker Hub  
-- Google Cloud Compute Engine  
+Frontend:
+cd frontend
+npm install
+ng serve
+Runs on port 4200
 
----
 
-## 📂 Repository Structure
+DOCKER BUILD (LOCAL)
+-------------------
+docker build ./backend -t mean-backend
+docker build ./frontend -t mean-frontend
 
-.
-├── backend  
-│   ├── Dockerfile  
-│   └── server.js  
-├── frontend  
-│   ├── Dockerfile  
-│   └── src  
-├── nginx  
-│   └── default.conf  
-├── docker-compose.yml  
-└── README.md  
 
----
+DOCKER COMPOSE DEPLOYMENT
+------------------------
+docker compose up -d
 
-## 🚀 Local Setup
+This starts:
+- MongoDB
+- Backend
+- Frontend
+- Nginx reverse proxy
 
-### Backend
+Application becomes accessible at:
 
-cd backend  
-npm install  
-node server.js  
+http://<VM_PUBLIC_IP>
 
-### Frontend
 
-cd frontend  
-npm install  
-ng serve  
+NGINX REVERSE PROXY
+------------------
+Configured in nginx/default.conf
 
-Open:
+Routing:
+ /      -> Angular frontend
+ /api   -> Node backend
 
-http://localhost:4200  
 
----
+CI/CD PIPELINE
+--------------
+Implemented using GitHub Actions.
 
-## 🐳 Docker Build
+Pipeline file:
+.github/workflows/docker-ci.yml
 
-docker build -t mean-backend ./backend  
-docker build -t mean-frontend ./frontend  
+On every push to main:
 
----
+1. Checkout repository
+2. Login to Docker Hub
+3. Build backend Docker image
+4. Push backend image to Docker Hub
+5. Build frontend Docker image
+6. Push frontend image to Docker Hub
 
-## 📦 Docker Hub
+Docker Hub credentials are stored in GitHub Actions secrets:
 
-Images pushed:
+DOCKERHUB_USERNAME
+DOCKERHUB_TOKEN
 
-- mean-backend  
-- mean-frontend  
 
----
-
-## 🧩 Docker Compose Deployment
-
-docker-compose pull  
-docker-compose up -d  
-
-Verify:
-
-docker ps  
-
----
-
-## 🌐 Cloud Deployment (GCP)
-
+CLOUD DEPLOYMENT (GCP)
+---------------------
 Steps followed:
 
-1. Created GCP VM (e2-medium)
-2. Installed Docker + docker-compose
-3. Cloned GitHub repo
-4. Ran Docker Compose
-5. Configured Nginx reverse proxy
-6. Opened firewall for port 80
-7. Accessed app publicly via VM External IP
+1. Created Ubuntu VM on Google Cloud
+2. Installed Docker and Docker Compose
+3. Cloned GitHub repository on VM
+4. Pulled Docker images from Docker Hub
+5. Deployed using docker-compose
+6. Enabled firewall rule for port 80
+7. Verified application using public IP
 
-Application available at:
+The VM can be stopped and restarted.
+External IP is ephemeral and may change after restart.
 
-http://<VM_EXTERNAL_IP>/tutorials  
 
----
+SCREENSHOTS (to be added in repo)
+--------------------------------
+screenshots/ci.png        -> GitHub Actions successful pipeline
+screenshots/dockerhub.png -> Docker Hub images (backend + frontend)
+screenshots/ui.png        -> Application running in browser
+screenshots/vm.png        -> GCP VM instance
+screenshots/dockerps.png -> docker ps output
 
-## 🔁 Nginx Reverse Proxy
 
-server {
-  listen 80;
+NOTES
+-----
+- MongoDB runs as Docker container
+- Nginx exposes application on port 80
+- CI/CD automatically builds and pushes images
+- Deployment uses docker-compose on GCP VM
+- Images are pulled from Docker Hub during deployment
 
-  location / {
-    proxy_pass http://frontend:80;
-  }
 
-  location /api/ {
-    proxy_pass http://backend:8080;
-  }
-}
-
-Routes:
-
-/ → Angular frontend  
-/api → Node backend  
-
----
-
-## 🧠 Challenges Faced & Solutions
-
-### MongoDB connection refused
-Cause: Mongo not running  
-Fix: Added MongoDB container in Docker Compose  
-
----
-
-### Angular dist folder not found
-Cause: Wrong COPY path  
-Fix:
-
-COPY --from=build /app/dist/angular-15-crud /usr/share/nginx/html  
-
----
-
-### Nginx API routing failed
-
-Cause: Trailing slash stripped /api  
-
-Fix:
-
-proxy_pass http://backend:8080;  
-
----
-
-### App not reachable publicly
-
-Cause: GCP firewall blocking port 80  
-Fix: Created ingress firewall rule allowing TCP 80  
-
----
-
-### GitHub push authentication failed
-
-Cause: Password auth deprecated  
-Fix: Used GitHub Personal Access Token  
-
----
-
-## ✅ Final Result
-
-- Full MEAN stack deployed on cloud  
-- Dockerized services  
-- Nginx reverse proxy  
-- Publicly accessible application  
-- Code in GitHub  
-- Images in Docker Hub  
-
----
-
-## 📸 Screenshots (attach in repo)
-
-- Application UI  
-- docker ps  
-- Docker Hub images  
-- GitHub repository  
-- GCP VM  
-- Firewall rule  
-- Nginx config  
-
----
-
-## 👤 Author
-
-Anirudha Puranic  
-DevOps Intern Candidate  
-GitHub: horneddragon
+END OF README
